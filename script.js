@@ -10,7 +10,14 @@ console.log(currentUrl);
 
 // stores images to display
 let imagesData = [];
+// amount of displayed images
 let resultValue = document.getElementById("resultValue");
+// selectedImages to display in outfitContainer
+let selectedImages = [
+    { url: baseUrl + '/wiki/images/thumb/8/88/%28Item%29_Able_Ranger%27s_Hat_Female.png/120px-%28Item%29_Able_Ranger%27s_Hat_Female.png'},
+    { url: baseUrl + '/wiki/images/thumb/3/39/%28Item%29_Adept%27s_Devious_Toga_Male.png/120px-%28Item%29_Adept%27s_Devious_Toga_Male.png'},
+    { url: baseUrl + '/wiki/images/thumb/e/e0/%28Item%29_Abstract_Masterpiece_Boots_Female.png/120px-%28Item%29_Abstract_Masterpiece_Boots_Female.png'},
+];
 
 // display images
 function displayImages(images) {
@@ -22,7 +29,6 @@ function displayImages(images) {
     images.forEach((image) => {
         const img = document.createElement('img');
         img.src = image.url;
-        img.alt = `${image.gender}_${image.category}`;
         container.appendChild(img);
     });
 }
@@ -38,6 +44,19 @@ function changeCategory() {
     category = document.getElementById('categoryFilter').value;
     currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
     fetchAndDisplayImages(currentUrl);
+}
+
+function displaySelection() {
+    const container = document.getElementById('outfitSelection');
+    // clear previous content
+    container.innerHTML = '';
+
+    selectedImages.forEach((image) => {
+        const img = document.createElement('img');
+        img.src = image.url;
+        img.alt = `${image.gender}_${image.category}`;
+        container.appendChild(img);
+    });
 }
 
 async function changePage(choice) {
@@ -137,6 +156,7 @@ async function fetchAndDisplayImages(url) {
 }
 
 fetchAndDisplayImages(currentUrl);
+displaySelection();
 
 // ** TODO **
 // buttons
