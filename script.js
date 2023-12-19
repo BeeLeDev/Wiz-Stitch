@@ -1,6 +1,12 @@
 // script.js
-// This is where you'll handle fetching and displaying images
+
 const baseUrl = 'https://wiki.wizard101central.com';
+// categories: "Hat", "Robe", "Boots", "Staff"
+let category = "Hat"
+let currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
+let currentPage = 1;
+console.log(currentUrl);
+
 
 // stores images to display
 let imagesData = [];
@@ -27,8 +33,52 @@ function filterImages(gender) {
     displayImages(filteredImages);
 }
 
+// it turns out the buttons to go previous show wrong images on THEIR site
+// that's unfortunate, i could probably find a fix if i wanted to
+async function changePage(choice) {
+    try {
+        const response = await fetch(currentUrl);
+        const html = await response.text();
+
+        // create a temporary element to parse the HTML
+        const tempElement = document.createElement('div');
+        tempElement.innerHTML = html;
+
+        let previousPagePath = '/wiki/Category:' + category + '_Images';
+        let nextPagePath;
+        if (currentPage === 1) {
+            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(7);;
+        } else {
+            let queries = tempElement.querySelectorAll('.mw-category-generated a');
+            previousPagePath = queries[0].href.substring(7);
+            nextPagePath = queries[1].href.substring(7);
+        }
+
+        if (choice === 'previous') {
+            currentUrl = baseUrl + previousPagePath;
+
+            if (currentPage <= 1) {
+                currentPage = 1;
+            } else {
+                currentPage -= 1;
+            }
+
+            fetchAndDisplayImages(currentUrl);
+        } else {
+            currentUrl = baseUrl + nextPagePath;
+            currentPage += 1;
+            fetchAndDisplayImages(currentUrl);
+        }
+    } catch (error) {
+        console.error('Error switching pages:', error);
+    }
+
+
+    
+}
+
 // fetches image paths from a url
-async function fetchPathsFromUrl(url) {
+async function fetchImagePathsFromUrl(url) {
     try {
         const response = await fetch(url);
         const html = await response.text();
@@ -40,13 +90,11 @@ async function fetchPathsFromUrl(url) {
         // selector finding img elements that are children of elements with the class "image" 
         // i notice that when we grab these images, they contain an href leading to another page, we can go there and grab images too if we want bigger
         const imageElements = tempElement.querySelectorAll('.image img');
-        console.log(imageElements[3]);
         
         // creates array of image urls by grabbing the "src" attribute
         // for each "img" in imageElements: grab 'src', take its substring, add it to array
         const urlPaths = Array.from(imageElements).map(img => img.src.substring(7));
         //console.log(imageUrls.length);
-        console.log(urlPaths[3]);
 
         return urlPaths;
     } catch (error) {
@@ -55,24 +103,11 @@ async function fetchPathsFromUrl(url) {
     }
 }
 
-// Function to fetch and display images from a given URL
-async function fetchAndDisplayImages() {
-    // *** CHANGE THIS TO DYNAMICALLY CHANGE CATEGORIES ***
-    let category = "Hat";
-
-    // displays 200 images
-    // path to a given category
-    const categoryUrl = baseUrl + '/wiki/Category:' + category + '_Images';
-    console.log(categoryUrl);
-
-    // path to the file for the item
-    const fileUrl = baseUrl + '/wiki/File:(Item)_Absolute_Zero_Brim_Male.png';
-
-    // path to the actual image for the item
-    const actualImageUrl = baseUrl + '/wiki/images/0/0c/%28Item%29_Absolute_Zero_Brim_Male.png';
-
+// fetch and display images from a given URL
+// this needs to be used on start, next, and previous
+async function fetchAndDisplayImages(url) {
     // get all objects with class "image" from the url
-    const urlPaths = await fetchPathsFromUrl(categoryUrl);
+    const urlPaths = await fetchImagePathsFromUrl(url);
 
     // empty out the array
     imagesData = [];
@@ -92,26 +127,27 @@ async function fetchAndDisplayImages() {
         )
     }
 
-    // sorts the array based on the 'gender' property
-    imagesData.sort((a, b) => {
-        // male first
-        return a.gender.localeCompare(b.gender);
+    // // sorts the array based on the 'gender' property
+    // imagesData.sort((a, b) => {
+    //     // male first
+    //     return a.gender.localeCompare(b.gender);
 
-        // female first
-        //b.gender.localeCompare(a.gender);
-    });
+    //     // female first
+    //     //b.gender.localeCompare(a.gender);
+    // });
 
-    console.log(imagesData);
     displayImages(imagesData);
 }
 
-fetchAndDisplayImages();
+fetchAndDisplayImages(currentUrl);
 
 // ** TODO **
 // buttons
     // filter
-    // sort
-    // next & previous
+        // gender
+    // sort?
+    // next & previous, use "mw-category-generated" class with title "Category:Hat Images", should be two things
     // clickable images to show current outfit
+    // item category
 // display specific # of images
 // set max columns
