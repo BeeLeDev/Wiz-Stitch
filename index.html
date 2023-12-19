@@ -9,9 +9,11 @@
 <body>
     <h1>Wizard101 Stitch Helper</h1>
     <!-- Your content will go here -->
-    <button onclick="filterImages('male')">Show Male</button>
-    <button onclick="filterImages('female')">Show Female</button>
-    <button onclick="filterImages('all')">Show All</button>
+    <select id="genderFilter" onchange="filterImages()">
+        <option value="all">Show All</option>
+        <option value="male">Show Male</option>
+        <option value="female">Show Female</option>
+    </select>
     <br>
     
     <div id="pageContainer">

@@ -4,6 +4,7 @@ const baseUrl = 'https://wiki.wizard101central.com';
 // categories: "Hat", "Robe", "Boots", "Staff"
 let category = "Hat"
 let currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
+// i could add max pages, but i don't need to...
 let currentPage = document.getElementById("pageValue");
 console.log(currentUrl);
 
@@ -27,8 +28,9 @@ function displayImages(images) {
 }
 
 // filter images based on gender
-function filterImages(gender) {
-    const filteredImages = gender === 'all' ? imagesData : imagesData.filter(image => image.gender === gender);
+function filterImages() {
+    const selectedGender = document.getElementById('genderFilter').value;
+    const filteredImages = selectedGender === 'all' ? imagesData : imagesData.filter(image => image.gender === selectedGender);
     displayImages(filteredImages);
 }
 
@@ -73,9 +75,6 @@ async function changePage(choice) {
     } catch (error) {
         console.error('Error switching pages:', error);
     }
-
-
-    
 }
 
 // fetches image paths from a url
@@ -128,15 +127,6 @@ async function fetchAndDisplayImages(url) {
         )
     }
 
-    // // sorts the array based on the 'gender' property
-    // imagesData.sort((a, b) => {
-    //     // male first
-    //     return a.gender.localeCompare(b.gender);
-
-    //     // female first
-    //     //b.gender.localeCompare(a.gender);
-    // });
-
     displayImages(imagesData);
 }
 
@@ -144,8 +134,7 @@ fetchAndDisplayImages(currentUrl);
 
 // ** TODO **
 // buttons
-    // filter
-        // gender
+
     // sort?
     // next & previous, use "mw-category-generated" class with title "Category:Hat Images", should be two things
     // clickable images to show current outfit
