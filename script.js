@@ -1,4 +1,4 @@
-// script.js
+/* script.js */
 
 const baseUrl = 'https://wiki.wizard101central.com';
 // categories: "Hat", "Robe", "Boot", "Wand"
@@ -141,4 +141,3 @@ fetchAndDisplayImages(currentUrl);
 // ** TODO **
 // buttons
     // clickable images to show current outfit
-// set max columns

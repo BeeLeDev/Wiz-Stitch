@@ -1,13 +1,18 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wizard101 Stitch Helper</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Wizard101 Stitch Helper</h1>
+    <div id="titleHeader">
+        <img id="logo" src="Pictures/Wizard101_logo.png" alt="Wizard101 Logo" >
+        <h1>Stitch Helper</h1>
+    </div>
     <!-- Your content will go here -->
     <select id="categoryFilter" onchange="changeCategory()">
         <option value="Hat">Hats</option>
@@ -30,6 +35,7 @@
         <br>
         # of Results: <span id="resultValue">0</span>
     </div>
+    <br>
     <div id="imageContainer"></div>
     <script src="script.js"></script>
 
