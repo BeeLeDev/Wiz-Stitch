@@ -13,11 +13,7 @@ let imagesData = [];
 // amount of displayed images
 let resultValue = document.getElementById("resultValue");
 // selectedImages to display in outfitContainer
-let selectedImages = [
-    { url: baseUrl + '/wiki/images/thumb/8/88/%28Item%29_Able_Ranger%27s_Hat_Female.png/120px-%28Item%29_Able_Ranger%27s_Hat_Female.png'},
-    { url: baseUrl + '/wiki/images/thumb/3/39/%28Item%29_Adept%27s_Devious_Toga_Male.png/120px-%28Item%29_Adept%27s_Devious_Toga_Male.png'},
-    { url: baseUrl + '/wiki/images/thumb/e/e0/%28Item%29_Abstract_Masterpiece_Boots_Female.png/120px-%28Item%29_Abstract_Masterpiece_Boots_Female.png'},
-];
+let selectedImages = [];
 
 // display images
 function displayImages(images) {
@@ -29,6 +25,15 @@ function displayImages(images) {
     images.forEach((image) => {
         const img = document.createElement('img');
         img.src = image.url;
+        img.style.cursor = 'pointer';
+
+        // adds click event listener to each image
+        img.addEventListener('click', () => {
+            console.log(`Image clicked: ${image.url}`);
+            selectedImages = selectedImages.filter(item => item.category != image.category);
+            selectedImages.push(image);
+            displaySelection();
+        });
         container.appendChild(img);
     });
 }
@@ -51,6 +56,15 @@ function displaySelection() {
     // clear previous content
     container.innerHTML = '';
 
+    // sorts by hat -> robe -> boot -> wand
+    function customSort(a, b) {
+        const categoryOrder = { 'hat': 1, 'robe': 2, 'boot': 3, 'wand': 4 };
+        const categoryA = categoryOrder[a.category];
+        const categoryB = categoryOrder[b.category];
+        return categoryA - categoryB;
+    }
+    selectedImages.sort(customSort);
+    
     selectedImages.forEach((image) => {
         const img = document.createElement('img');
         img.src = image.url;
