@@ -4,9 +4,8 @@ const baseUrl = 'https://wiki.wizard101central.com';
 // categories: "Hat", "Robe", "Boots", "Staff"
 let category = "Hat"
 let currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
-let currentPage = 1;
+let currentPage = document.getElementById("pageValue");
 console.log(currentUrl);
-
 
 // stores images to display
 let imagesData = [];
@@ -27,14 +26,12 @@ function displayImages(images) {
     });
 }
 
-// Function to filter images based on gender
+// filter images based on gender
 function filterImages(gender) {
     const filteredImages = gender === 'all' ? imagesData : imagesData.filter(image => image.gender === gender);
     displayImages(filteredImages);
 }
 
-// it turns out the buttons to go previous show wrong images on THEIR site
-// that's unfortunate, i could probably find a fix if i wanted to
 async function changePage(choice) {
     try {
         const response = await fetch(currentUrl);
@@ -46,7 +43,9 @@ async function changePage(choice) {
 
         let previousPagePath = '/wiki/Category:' + category + '_Images';
         let nextPagePath;
-        if (currentPage === 1) {
+        let currentPageValue = parseInt(currentPage.textContent);
+
+        if (currentPageValue === 1) {
             nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(7);;
         } else {
             let queries = tempElement.querySelectorAll('.mw-category-generated a');
@@ -57,18 +56,20 @@ async function changePage(choice) {
         if (choice === 'previous') {
             currentUrl = baseUrl + previousPagePath;
 
-            if (currentPage <= 1) {
-                currentPage = 1;
+            if (currentPageValue <= 1) {
+                currentPageValue = 1;
             } else {
-                currentPage -= 1;
+                currentPageValue -= 1;
             }
 
             fetchAndDisplayImages(currentUrl);
         } else {
             currentUrl = baseUrl + nextPagePath;
-            currentPage += 1;
+            currentPageValue += 1;
             fetchAndDisplayImages(currentUrl);
         }
+
+        currentPage.textContent = currentPageValue;
     } catch (error) {
         console.error('Error switching pages:', error);
     }

@@ -13,11 +13,16 @@
     <button onclick="filterImages('female')">Show Female</button>
     <button onclick="filterImages('all')">Show All</button>
     <br>
-    <button onclick="changePage('previous')">Previous</button>
-    <button onclick="changePage('next')">Next</button>
-    <div id="resultContainer">
+    
+    <div id="pageContainer">
+        <button onclick="changePage('previous')">Previous</button>
+        <button onclick="changePage('next')">Next</button>
+        <br>
+        Page: <span id="pageValue">1</span>
+        <br>
         # of Results: <span id="resultValue">0</span>
     </div>
+    
     <div id="imageContainer"></div>
     <script src="script.js"></script>
 
