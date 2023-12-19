@@ -1,7 +1,7 @@
 // script.js
 
 const baseUrl = 'https://wiki.wizard101central.com';
-// categories: "Hat", "Robe", "Boots", "Staff"
+// categories: "Hat", "Robe", "Boot", "Wand"
 let category = "Hat"
 let currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
 // i could add max pages, but i don't need to...
@@ -22,7 +22,7 @@ function displayImages(images) {
     images.forEach((image) => {
         const img = document.createElement('img');
         img.src = image.url;
-        img.alt = `${image.gender}_${image.type}`;
+        img.alt = `${image.gender}_${image.category}`;
         container.appendChild(img);
     });
 }
@@ -32,6 +32,12 @@ function filterImages() {
     const selectedGender = document.getElementById('genderFilter').value;
     const filteredImages = selectedGender === 'all' ? imagesData : imagesData.filter(image => image.gender === selectedGender);
     displayImages(filteredImages);
+}
+
+function changeCategory() {
+    category = document.getElementById('categoryFilter').value;
+    currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
+    fetchAndDisplayImages(currentUrl);
 }
 
 async function changePage(choice) {
@@ -104,7 +110,7 @@ async function fetchImagePathsFromUrl(url) {
 }
 
 // fetch and display images from a given URL
-// this needs to be used on start, next, and previous
+// this needs to be used on start, next, previous, and filters
 async function fetchAndDisplayImages(url) {
     // get all objects with class "image" from the url
     const urlPaths = await fetchImagePathsFromUrl(url);
@@ -123,7 +129,7 @@ async function fetchAndDisplayImages(url) {
 
         // add an object with properties: gender, type, and url to array imagesData
         imagesData.push(
-            { gender: genderString, type: category.toLowerCase(), url: baseUrl + path}
+            { gender: genderString, category: category.toLowerCase(), url: baseUrl + path}
         )
     }
 
@@ -134,10 +140,5 @@ fetchAndDisplayImages(currentUrl);
 
 // ** TODO **
 // buttons
-
-    // sort?
-    // next & previous, use "mw-category-generated" class with title "Category:Hat Images", should be two things
     // clickable images to show current outfit
-    // item category
-// display specific # of images
 // set max columns

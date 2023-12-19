@@ -9,13 +9,19 @@
 <body>
     <h1>Wizard101 Stitch Helper</h1>
     <!-- Your content will go here -->
+    <select id="categoryFilter" onchange="changeCategory()">
+        <option value="Hat">Hats</option>
+        <option value="Robe">Robes</option>
+        <option value="Boot">Boots</option>
+        <option value="Wand">Wands</option>
+    </select>
+    <br>
     <select id="genderFilter" onchange="filterImages()">
         <option value="all">Show All</option>
         <option value="male">Show Male</option>
         <option value="female">Show Female</option>
     </select>
     <br>
-    
     <div id="pageContainer">
         <button onclick="changePage('previous')">Previous</button>
         <button onclick="changePage('next')">Next</button>
@@ -24,7 +30,6 @@
         <br>
         # of Results: <span id="resultValue">0</span>
     </div>
-    
     <div id="imageContainer"></div>
     <script src="script.js"></script>
 
