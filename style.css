@@ -1,4 +1,11 @@
 /* styles.css */
+/* i hate the css part */
+
+@font-face {
+    font-family: 'Shermlock';
+    src: url('Fonts/shermlock/Shermlock.ttf') format('truetype'); /* Adjust the file path and format */
+    /* Add additional font formats if necessary (e.g., woff, woff2) */
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -8,18 +15,20 @@ body {
 }
 
 #titleHeader {
+    font-family: 'Shermlock', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-#logo {
+#logo { 
     width: 200px;
     height: auto;
+    margin-right: 10px;
 }
 
 h1 {
-    color: #ffffff;
+    color: #ff9100;
 }
 
 select {
@@ -70,4 +79,3 @@ button {
     position: relative;
     top: -250px;
 }
-

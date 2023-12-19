@@ -64,7 +64,7 @@ function displaySelection() {
         return categoryA - categoryB;
     }
     selectedImages.sort(customSort);
-    
+
     selectedImages.forEach((image) => {
         const img = document.createElement('img');
         img.src = image.url;
@@ -133,7 +133,6 @@ async function fetchImagePathsFromUrl(url) {
         // creates array of image urls by grabbing the "src" attribute
         // for each "img" in imageElements: grab 'src', take its substring, add it to array
         const urlPaths = Array.from(imageElements).map(img => img.src.substring(7));
-        //console.log(imageUrls.length);
 
         return urlPaths;
     } catch (error) {
@@ -171,7 +170,3 @@ async function fetchAndDisplayImages(url) {
 
 fetchAndDisplayImages(currentUrl);
 displaySelection();
-
-// ** TODO **
-// buttons
-    // clickable images to show current outfit
