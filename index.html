@@ -9,8 +9,14 @@
 <body>
     <h1>Welcome to Wizard101 Stitch Helper</h1>
     <!-- Your content will go here -->
-    <div id="image-container"></div>
+    <button onclick="filterImages('male')">Show Male</button>
+    <button onclick="filterImages('female')">Show Female</button>
+    <button onclick="filterImages('all')">Show All</button>
+    <div id="resultContainer">
+        # of Results: <span id="resultValue">0</span>
+    </div>
+    <div id="imageContainer"></div>
     <script src="script.js"></script>
-    <button onclick="fetchAndDisplayImages()">Fetch and Display Images</button>
+
 </body>
 </html>

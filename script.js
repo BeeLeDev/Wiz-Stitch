@@ -2,9 +2,14 @@
 // This is where you'll handle fetching and displaying images
 const baseUrl = 'https://wiki.wizard101central.com';
 
+// stores images to display
+let imagesData = [];
+let resultValue = document.getElementById("resultValue");
+
 // display images
 function displayImages(images) {
-    const container = document.getElementById('image-container');
+    resultValue.textContent = images.length;
+    const container = document.getElementById('imageContainer');
     // clear previous content
     container.innerHTML = '';
 
@@ -14,6 +19,12 @@ function displayImages(images) {
         img.alt = `${image.gender}_${image.type}`;
         container.appendChild(img);
     });
+}
+
+// Function to filter images based on gender
+function filterImages(gender) {
+    const filteredImages = gender === 'all' ? imagesData : imagesData.filter(image => image.gender === gender);
+    displayImages(filteredImages);
 }
 
 // fetches image paths from a url
@@ -62,17 +73,17 @@ async function fetchAndDisplayImages() {
 
     // get all objects with class "image" from the url
     const urlPaths = await fetchPathsFromUrl(categoryUrl);
-    
-    // stores images to display
-    let imagesData = [];
+
+    // empty out the array
+    imagesData = [];
 
     for (let path of urlPaths) {
         let genderString = "";
 
-        if (path.includes("male")) {
-            genderString = "male";
-        } else {
+        if (path.includes("Female")) {
             genderString = "female";
+        } else {
+            genderString = "male";
         }
 
         // add an object with properties: gender, type, and url to array imagesData
@@ -94,8 +105,13 @@ async function fetchAndDisplayImages() {
     displayImages(imagesData);
 }
 
-//fetchAndDisplayImages();
+fetchAndDisplayImages();
 
-
-// Initial call to display images
-//displayImages(imagesData);
+// ** TODO **
+// buttons
+    // filter
+    // sort
+    // next & previous
+    // clickable images to show current outfit
+// display specific # of images
+// set max columns
