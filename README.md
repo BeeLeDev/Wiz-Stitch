@@ -1,2 +1,2 @@
 # Wiz-Stitch
-Website to simplify creating stitches
+Download zip and open index.html
