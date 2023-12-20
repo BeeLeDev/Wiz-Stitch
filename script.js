@@ -86,12 +86,14 @@ async function changePage(choice) {
         let nextPagePath;
         let currentPageValue = parseInt(currentPage.textContent);
 
+        //let localPage = 'file://';
+        let githubPages = 'https://oopsuwu.github.io';
         if (currentPageValue === 1) {
-            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(7);;
+            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(githubPages.length);;
         } else {
             let queries = tempElement.querySelectorAll('.mw-category-generated a');
-            previousPagePath = queries[0].href.substring(7);
-            nextPagePath = queries[1].href.substring(7);
+            previousPagePath = queries[0].href.substring(githubPages.length);
+            nextPagePath = queries[1].href.substring(githubPages.length);
         }
 
         if (choice === 'previous') {
@@ -135,9 +137,7 @@ async function fetchImagePathsFromUrl(url) {
 
         //let localPage = 'file://';
         let githubPages = 'https://oopsuwu.github.io';
-        
         const urlPaths = Array.from(imageElements).map(img => img.src.substring(githubPages.length));
-        console.log(urlPaths);
 
         return urlPaths;
     } catch (error) {
