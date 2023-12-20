@@ -132,7 +132,12 @@ async function fetchImagePathsFromUrl(url) {
         
         // creates array of image urls by grabbing the "src" attribute
         // for each "img" in imageElements: grab 'src', take its substring, add it to array
-        const urlPaths = Array.from(imageElements).map(img => img.src.substring(7));
+
+        //let localPage = 'file://';
+        let githubPages = 'https://oopsuwu.github.io';
+        
+        const urlPaths = Array.from(imageElements).map(img => img.src.substring(githubPages.length));
+        console.log(urlPaths);
 
         return urlPaths;
     } catch (error) {
