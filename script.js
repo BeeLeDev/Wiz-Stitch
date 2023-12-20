@@ -86,12 +86,14 @@ async function changePage(choice) {
         let nextPagePath;
         let currentPageValue = parseInt(currentPage.textContent);
 
+        //let localPage = 'file://';
+        let githubPages = 'https://oopsuwu.github.io';
         if (currentPageValue === 1) {
-            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(7);;
+            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(githubPages.length);;
         } else {
             let queries = tempElement.querySelectorAll('.mw-category-generated a');
-            previousPagePath = queries[0].href.substring(7);
-            nextPagePath = queries[1].href.substring(7);
+            previousPagePath = queries[0].href.substring(githubPages.length);
+            nextPagePath = queries[1].href.substring(githubPages.length);
         }
 
         if (choice === 'previous') {
@@ -132,7 +134,10 @@ async function fetchImagePathsFromUrl(url) {
         
         // creates array of image urls by grabbing the "src" attribute
         // for each "img" in imageElements: grab 'src', take its substring, add it to array
-        const urlPaths = Array.from(imageElements).map(img => img.src.substring(7));
+
+        //let localPage = 'file://';
+        let githubPages = 'https://oopsuwu.github.io';
+        const urlPaths = Array.from(imageElements).map(img => img.src.substring(githubPages.length));
 
         return urlPaths;
     } catch (error) {
