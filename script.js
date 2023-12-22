@@ -2,18 +2,38 @@
 
 const baseUrl = 'https://wiki.wizard101central.com';
 // categories: "Hat", "Robe", "Boot", "Wand"
-let category = "Hat"
+let category = "Hat";
 let currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
 // i could add max pages, but i don't need to...
 let currentPage = document.getElementById("pageValue");
 console.log(currentUrl);
 
-// stores images to display
+// stores image objects to display
 let imagesData = [];
 // amount of displayed images
 let resultValue = document.getElementById("resultValue");
 // selectedImages to display in outfitContainer
 let selectedImages = [];
+
+function setImagesData(imagePaths) {
+    // empty out the array
+    imagesData = [];
+
+    for (let path of imagePaths) {
+        let genderString = "";
+
+        if (path.includes("Female")) {
+            genderString = "female";
+        } else {
+            genderString = "male";
+        }
+
+        // add an object with properties: gender, type, and url to array imagesData
+        imagesData.push(
+            { gender: genderString, category: category.toLowerCase(), url: baseUrl + path}
+        );
+    }
+}
 
 // display images
 function displayImages(images) {
@@ -38,19 +58,7 @@ function displayImages(images) {
     });
 }
 
-// filter images based on gender
-function filterImages() {
-    const selectedGender = document.getElementById('genderFilter').value;
-    const filteredImages = selectedGender === 'all' ? imagesData : imagesData.filter(image => image.gender === selectedGender);
-    displayImages(filteredImages);
-}
-
-function changeCategory() {
-    category = document.getElementById('categoryFilter').value;
-    currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
-    fetchAndDisplayImages(currentUrl);
-}
-
+// display user selected images
 function displaySelection() {
     const container = document.getElementById('outfitSelection');
     // clear previous content
@@ -73,6 +81,20 @@ function displaySelection() {
     });
 }
 
+// filter images based on gender
+function filterImages() {
+    const selectedGender = document.getElementById('genderFilter').value;
+    const filteredImages = selectedGender === 'all' ? imagesData : imagesData.filter(image => image.gender === selectedGender);
+    displayImages(filteredImages);
+}
+
+function changeCategory() {
+    category = document.getElementById('categoryFilter').value;
+    currentUrl = baseUrl + '/wiki/Category:' + category + '_Images';
+    fetchAndDisplayImages(currentUrl);
+}
+
+// displays next set of images 
 async function changePage(choice) {
     try {
         const response = await fetch(currentUrl);
@@ -86,14 +108,13 @@ async function changePage(choice) {
         let nextPagePath;
         let currentPageValue = parseInt(currentPage.textContent);
 
-        //let localPage = 'file://';
-        let githubPages = 'https://oopsuwu.github.io';
+        let localPage = 'file://';
         if (currentPageValue === 1) {
-            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(githubPages.length);;
+            nextPagePath = tempElement.querySelector('.mw-category-generated a').href.substring(localPage.length);
         } else {
             let queries = tempElement.querySelectorAll('.mw-category-generated a');
-            previousPagePath = queries[0].href.substring(githubPages.length);
-            nextPagePath = queries[1].href.substring(githubPages.length);
+            previousPagePath = queries[0].href.substring(localPage.length);
+            nextPagePath = queries[1].href.substring(localPage.length);
         }
 
         if (choice === 'previous') {
@@ -134,10 +155,8 @@ async function fetchImagePathsFromUrl(url) {
         
         // creates array of image urls by grabbing the "src" attribute
         // for each "img" in imageElements: grab 'src', take its substring, add it to array
-
-        //let localPage = 'file://';
-        let githubPages = 'https://oopsuwu.github.io';
-        const urlPaths = Array.from(imageElements).map(img => img.src.substring(githubPages.length));
+        let localPage = 'file://';
+        const urlPaths = Array.from(imageElements).map(img => img.src.substring(localPage.length));
 
         return urlPaths;
     } catch (error) {
@@ -146,32 +165,10 @@ async function fetchImagePathsFromUrl(url) {
     }
 }
 
-// fetch and display images from a given URL
-// this needs to be used on start, next, previous, and filters
 async function fetchAndDisplayImages(url) {
-    // get all objects with class "image" from the url
-    const urlPaths = await fetchImagePathsFromUrl(url);
-
-    // empty out the array
-    imagesData = [];
-
-    for (let path of urlPaths) {
-        let genderString = "";
-
-        if (path.includes("Female")) {
-            genderString = "female";
-        } else {
-            genderString = "male";
-        }
-
-        // add an object with properties: gender, type, and url to array imagesData
-        imagesData.push(
-            { gender: genderString, category: category.toLowerCase(), url: baseUrl + path}
-        )
-    }
-
+    const imagePaths = await fetchImagePathsFromUrl(url);
+    setImagesData(imagePaths);
     displayImages(imagesData);
 }
 
 fetchAndDisplayImages(currentUrl);
-displaySelection();
